@@ -7,9 +7,9 @@ COPY Modelfile /Modelfile
 # 2. Start the Ollama server first in the background so it can pull the models.
 RUN ollama serve & \
   # Wait for some seconds for the server to be ready
-  sleep 5 && \
+  sleep 10 && \
   # Pull the quantized base model
-  ollama pull phi-3:mini-q4_K_M && \
+  ollama pull phi3:mini && \
   # Bake the personality. This creates a new model named 'alfred-brain'.
   ollama create alfred-brain -f /Modelfile && \
   # Stop the background server as it will be restarted by CMD
