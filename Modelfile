@@ -1,5 +1,5 @@
 # This tells the 'alfred-brain' to use the quantized model that the Dockerfile pulled.
-FROM phi-3:mini-q4_K_M
+FROM phi3:mini
 
 # The 'ALFRED' personality
 STSYEM """
