@@ -4,11 +4,16 @@ FROM ollama/ollama
 # 1. Copying the custom personality for alfred into the container.
 COPY Modelfile /Modelfile
 
-# 2. Pulling the quantized base model.
-RUN ollama pull phi-3:mini-q4_K_M
-
-# 3. "Baking" the personality to create a new model inside the container named 'alfred-brain'.
-RUN ollama create alfred-brain -f /Modelfile
+# 2. Start the Ollama server first in the background so it can pull the models.
+RUN ollama serve & \
+  # Wait for some seconds for the server to be ready
+  sleep 5 && \
+  # Pull the quantized base model
+  ollama pull phi-3:mini-q4_K_M && \
+  # Bake the personality. This creates a new model named 'alfred-brain'.
+  ollama create alfred-brain -f /Modelfile && \
+  # Stop the background server as it will be restarted by CMD
+  kill $(pgrep ollama)
 
 # Setting up the "adapter" to let lambda run Ollama
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
