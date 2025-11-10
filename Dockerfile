@@ -11,7 +11,7 @@ RUN ollama pull phi-3:mini-q4_K_M
 RUN ollama create alfred-brain -f /Modelfile
 
 # Setting up the "adapter" to let lambda run Ollama
-COPY --from=awsguru/aws-lambda-adapter:0.8.3 /lambda-adapter /opt/extensions/lambda-adapter
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
 
 # Setting the host to be reachable and start the server
 ENV OLLAMA_HOST 0.0.0.0
